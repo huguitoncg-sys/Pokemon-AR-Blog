@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokémon AR Card Battle Simulation</title>
+  <meta name="description" content="A Vuforia-powered AR app that recognizes Pokémon Energy cards, locks in two scanned types, and determines the winner using type advantages." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="Home">⚡ PokéAR Battle</a>
+
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-controls="nav-links" aria-expanded="false">Menu</button>
+        <div class="nav-links" id="nav-links">
+          <a href="#intro">Intro</a>
+          <a href="#app">The App</a>
+          <a href="#how">How it works</a>
+          <a href="#database">Database</a>
+          <a href="#scripts">Scripts</a>
+          <a href="#issues">Issues</a>
+          <a href="#improvements">Improvements</a>
+          <a href="#demo">Demo</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="kicker">CIM433 • Hugo Camacho</p>
+          <h1>Pokémon AR Card Battle Simulation</h1>
+          <p class="lede">
+            Scan two Pokémon Energy cards with Vuforia, lock each card into a slot, and instantly see which type has the advantage.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#how">See how it works</a>
+            <a class="btn secondary" href="#demo">Watch the demo</a>
+          </div>
+
+          <div class="chips" aria-label="Key types">
+            <span class="chip">Fire</span>
+            <span class="chip">Water</span>
+            <span class="chip">Grass</span>
+            <span class="chip">Electric</span>
+            <span class="chip">Psychic</span>
+            <span class="chip">Fighting</span>
+            <span class="chip">Dark</span>
+            <span class="chip">Steel</span>
+          </div>
+        </div>
+
+        <div class="hero-card" role="img" aria-label="Card battle UI preview placeholder">
+          <div class="hero-card-top">
+            <span class="badge">AR + Type Advantage</span>
+            <span class="badge ghost">Vuforia</span>
+          </div>
+          <div class="hero-card-body">
+            <div class="slot">
+              <p class="slot-title">Slot 1</p>
+              <p class="slot-value">Water</p>
+            </div>
+            <div class="slot">
+              <p class="slot-title">Slot 2</p>
+              <p class="slot-value">Fire</p>
+            </div>
+            <div class="winner">
+              <p class="winner-label">Winner</p>
+              <p class="winner-value">Water ✅</p>
+            </div>
+          </div>
+          <p class="hero-card-footnote">Replace this with screenshots from your Unity build if you want.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="intro">
+      <div class="container">
+        <h2>Introduction</h2>
+        <p>
+          In Pokémon, every Pokémon (and many moves) belongs to a type. Types interact like a strategy system: some types naturally
+          have an advantage over others. That advantage shows up as attacks doing more damage (super effective) or less damage (not very effective).
+        </p>
+
+        <div class="callout">
+          <h3>Classic triangle</h3>
+          <ul class="bullets">
+            <li><strong>Water</strong> beats <strong>Fire</strong></li>
+            <li><strong>Fire</strong> beats <strong>Grass</strong></li>
+            <li><strong>Grass</strong> beats <strong>Water</strong></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="app">
+      <div class="container">
+        <h2>What is my app?</h2>
+        <p>
+          This project is a Vuforia-powered app that recognizes Pokémon Energy cards, locks in two scanned types, and automatically determines
+          which type has the advantage, showing the winner instantly.
+        </p>
+
+        <div class="grid two">
+          <div class="panel">
+            <h3>Goal</h3>
+            <p>Make type matchups feel instant and visual using AR tracking.</p>
+          </div>
+          <div class="panel">
+            <h3>Inputs</h3>
+            <p>Two energy cards scanned one at a time, each saved to a slot.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <h2>How does it work?</h2>
+
+        <ol class="steps">
+          <li>
+            <h3>Scan card 1</h3>
+            <p>Present the first card to the camera. When Vuforia detects it, the UI shows a “Detected” message and the current type.</p>
+          </li>
+          <li>
+            <h3>Lock Slot 1</h3>
+            <p>Press Slot 1 to save that detected type.</p>
+          </li>
+          <li>
+            <h3>Scan card 2</h3>
+            <p>Repeat the same process for the second card.</p>
+          </li>
+          <li>
+            <h3>Lock Slot 2 → Determine winner</h3>
+            <p>Once Slot 2 is locked, the app compares the two types and shows the winner (or a tie).</p>
+          </li>
+        </ol>
+
+        <div class="callout subtle">
+          <h3>UX detail</h3>
+          <p>After Slot 2 is locked, the “Detected” message disappears and the winner text turns on.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="database">
+      <div class="container">
+        <h2>My database</h2>
+        <p>
+          The project uses a Vuforia image target database containing all card images. Vuforia also gives each image a rating for how “readable”
+          it is, and some images track better than others.
+        </p>
+
+        <div class="grid two">
+          <div class="panel">
+            <h3>What’s inside</h3>
+            <p>One image target per card, each mapped to a specific energy type.</p>
+          </div>
+          <div class="panel">
+            <h3>Why ratings matter</h3>
+            <p>Higher-rated images are easier to detect consistently and from more angles.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="scripts">
+      <div class="container">
+        <h2>Key scripts</h2>
+
+        <div class="grid three">
+          <article class="panel">
+            <h3>BattleUIManager.cs</h3>
+            <p>Controls the battle flow and UI: saves types into Slot 1 and Slot 2, hides “Detected” after Slot 2, displays the winner, and resets.</p>
+          </article>
+
+          <article class="panel">
+            <h3>CardType.cs</h3>
+            <p>Defines the energy types (Fire, Water, Grass, etc.) so the rest of the code stays consistent and clean.</p>
+          </article>
+
+          <article class="panel">
+            <h3>TypeChart.cs</h3>
+            <p>Stores the matchup rules. When both slots are filled, it compares effectiveness and returns a winner or tie.</p>
+          </article>
+
+          <article class="panel">
+            <h3>VuforiaCardReporter.cs</h3>
+            <p>Runs on each ImageTarget. When tracking is found/lost, it reports the detected type to the UI manager.</p>
+          </article>
+
+          <article class="panel">
+            <h3>VuforiaFocusSetup.cs</h3>
+            <p>Forces autofocus when Vuforia starts, improving scan reliability.</p>
+          </article>
+
+          <article class="panel">
+            <h3>ForceVFXRestart.cs</h3>
+            <p>Restarts the lightning visual effect on a timer so it loops continuously.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="issues">
+      <div class="container">
+        <h2>Implementation issues</h2>
+        <p>
+          The biggest challenge was detection consistency. Some cards tracked better than others, and the app sometimes needed restarts to
+          recover from missed detection.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="improvements">
+      <div class="container">
+        <h2>Areas of improvement</h2>
+
+        <div class="grid two">
+          <div class="panel">
+            <h3>Mobile device</h3>
+            <p>Turn it into a real phone app so the camera and scanning experience feel natural and portable.</p>
+          </div>
+          <div class="panel">
+            <h3>UI polish</h3>
+            <p>Tighten the text, buttons, and add more on-screen effects during detection and when the winner appears.</p>
+          </div>
+          <div class="panel">
+            <h3>Better detection</h3>
+            <p>More camera tuning, stronger target images, and improved feedback when tracking is weak.</p>
+          </div>
+          <div class="panel">
+            <h3>Stability</h3>
+            <p>Handle tracking loss more gracefully so the user doesn’t feel like they need to restart.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="demo">
+      <div class="container">
+        <h2>Video demo</h2>
+        <p>
+          You can link your demo video here. (If you want it embedded, you can swap this button for an iframe to YouTube/Vimeo.)
+        </p>
+
+        <a class="btn" href="https://drive.google.com/file/d/1Skp6_liajdg8unvmCt14rOPEoysqoVtK/view?usp=sharing" target="_blank" rel="noreferrer">
+          Open demo video
+        </a>
+      </div>
+    </section>
+
+    <section class="section outro">
+      <div class="container">
+        <h2>Thanks for reading</h2>
+        <p>If you want, send me 2–3 screenshots from your Unity build and I’ll replace the hero mockup with real images and add a gallery section.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Hugo Camacho • Pokémon AR Card Battle Simulation</p>
+      <a href="#top" class="back-to-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
